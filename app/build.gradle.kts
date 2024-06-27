@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.hannah.slidinggamen"
+    namespace = "com.hannah.slidinggame"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.hannah.slidinggamen"
+        applicationId = "com.hannah.slidinggame"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
