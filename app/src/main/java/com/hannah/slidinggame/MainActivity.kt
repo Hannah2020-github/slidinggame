@@ -18,6 +18,9 @@ import com.hannah.slidinggame.ui.theme.SlidingGameTheme
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val myView: MyView = MyView(this)
+        setContentView(myView)
 
     }
 }
+
