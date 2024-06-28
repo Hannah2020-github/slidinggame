@@ -36,5 +36,9 @@ class MyView(context: Context): View(context) {
         for (i in 0..5) {
             c.drawLine(sideMargin, verticalMargin + i * gridLength, w - sideMargin, verticalMargin + i * gridLength, p)
         }
+        // draw 6 vertical lines
+        for(i in 0..5) {
+            c.drawLine(sideMargin + i * gridLength, verticalMargin, sideMargin + i * gridLength, h - verticalMargin, p)
+        }
     }
 }
