@@ -3,9 +3,11 @@ package com.hannah.slidinggame
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 
-class MyView(context: Context): View(context) {
+class MyView(c: Context): View(c) {
     private val p = Paint()
     private var sideMargin = 0f
     private var verticalMargin = 0f
@@ -37,6 +39,30 @@ class MyView(context: Context): View(context) {
         }
     }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            var btnToching = false
+            // loop through button, check if a button is pressed
+            for (btn in buttons) {
+                if (btn.contains(event.x, event.y)) {
+                    btnToching = true
+                    btn.press()
+                    break
+                }
+            }
+            if (!btnToching) {
+                Toast.makeText(context, resources.getString(R.string.btn_notification), Toast.LENGTH_SHORT).show()
+            }
+
+        }else if (event.action == MotionEvent.ACTION_UP) {
+            for (btn in buttons) {
+                btn.unPress()
+            }
+        }
+        invalidate()
+
+        return true
+    }
 
     private fun makeButtons() {
         val charArray = arrayOf('1', '2', '3', '4', '5') // button 橫向的標示
