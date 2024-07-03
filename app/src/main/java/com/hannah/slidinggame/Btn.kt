@@ -54,4 +54,22 @@ class Btn(res: Resources, label: Char, size: Int, x: Float, y: Float) {
     fun unPress() {
         pressed = false
     }
+
+    fun getX(): Float {
+        return bounds.left
+    }
+
+    fun getY(): Float {
+        return bounds.top
+    }
+
+    fun getChar(): Char {
+        return char
+    }
+
+    fun isColumnBtn(): Boolean{
+//        return char == '1' || char == '2' || char == '3' || char == '4' || char == '5'
+        return char == 'A' || char == 'B' || char == 'C' || char == 'D' || char == 'E'
+    }
+
 }
