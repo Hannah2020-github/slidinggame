@@ -3,6 +3,9 @@ package com.hannah.slidinggame
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
@@ -17,6 +20,20 @@ class MyView(c: Context): View(c) {
     private var h = 0f
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
+    private lateinit var timer: Timer
+
+    inner class Timer(looper: Looper) : Handler(looper) {
+        init {
+            sendMessageDelayed(Message.obtain(), 0)
+        }
+        override fun handleMessage(msg: Message) {
+            for (token in tokens) {
+                token.move()
+            }
+            invalidate()
+            sendMessageDelayed(Message.obtain(), 10)
+        }
+    }
 
 
     override fun onDraw(canvas: Canvas) {
@@ -31,6 +48,7 @@ class MyView(c: Context): View(c) {
             w = width.toFloat()
             h = height.toFloat()
             makeButtons()
+            timer = Timer(Looper.getMainLooper())
         }
         // 繪製出所有的線段
         drawGrid(canvas)
@@ -54,9 +72,13 @@ class MyView(c: Context): View(c) {
                     btn.press()
                     // 製作出新 token
                     if (btn.isColumnBtn()) {
-                        tokens.add(Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar()))
+                        val token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
+                        token.changeVelocity(1f, 0f)
+                        tokens.add(token)
                     }else {
-                        tokens.add(Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar()))
+                        val token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
+                        token.changeVelocity(0f, 1f)
+                        tokens.add(token)
                     }
                     break
                 }

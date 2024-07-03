@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.PointF
 import android.graphics.RectF
 
 /*
@@ -15,6 +16,8 @@ import android.graphics.RectF
     4. token image
     5. 玩家輪流替換：player
     6. 繪製 token
+
+    7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
 class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Char) {
@@ -23,6 +26,7 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
     }
     private val bounds: RectF = RectF(x, y, x + size, y + size) // token 位置
     private var dog: Bitmap
+    private val velocity = PointF(0f, 0f)
 
     init {
         if (player % 2 == 0) {
@@ -37,5 +41,15 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
 
     fun drawToken(c: Canvas) {
         c.drawBitmap(dog, bounds.left, bounds.top, null)
+    }
+
+    fun move() {
+        bounds.left += velocity.x
+        bounds.top += velocity.y
+    }
+
+    fun changeVelocity(x: Float, y: Float) {
+        velocity.x = x
+        velocity.y = y
     }
 }
