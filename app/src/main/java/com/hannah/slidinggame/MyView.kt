@@ -61,11 +61,11 @@ class MyView(c: Context): View(c), TickListener {
                     var token: Token
                     // 製作出新 token
                     if (btn.isColumnBtn()) {
-                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
-                        token.changeVelocity(1f, 0f)
-                    }else {
                         token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
                         token.changeVelocity(0f, 1f)
+                    }else {
+                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
+                        token.changeVelocity(1f, 0f)
                     }
                     tokens.add(token)
                     timer.register(token)

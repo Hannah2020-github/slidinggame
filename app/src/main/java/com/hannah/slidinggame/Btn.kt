@@ -68,8 +68,7 @@ class Btn(res: Resources, label: Char, size: Int, x: Float, y: Float) {
     }
 
     fun isColumnBtn(): Boolean{
-//        return char == '1' || char == '2' || char == '3' || char == '4' || char == '5'
-        return char == 'A' || char == 'B' || char == 'C' || char == 'D' || char == 'E'
+        return char == '1' || char == '2' || char == '3' || char == '4' || char == '5'
     }
 
 }
