@@ -63,9 +63,11 @@ class MyView(c: Context): View(c), TickListener {
                     if (btn.isColumnBtn()) {
                         token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
                         token.changeVelocity(0f, 1f)
+                        token.setDestination(0f, gridLength)
                     }else {
                         token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
                         token.changeVelocity(1f, 0f)
+                        token.setDestination(gridLength, 0f)
                     }
                     tokens.add(token)
                     timer.register(token)

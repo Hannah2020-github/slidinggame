@@ -26,7 +26,8 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
     }
     private val bounds: RectF = RectF(x, y, x + size, y + size) // token 位置
     private var dog: Bitmap
-    private val velocity = PointF(0f, 0f)
+    private val velocity = PointF(0f, 0f) // move token
+    private val destination = PointF(x, y) // 指定 token 移置特定位置
 
     init {
         if (player % 2 == 0) {
@@ -44,6 +45,13 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
     }
 
     fun move() {
+        // token 橫向移動，且與格子的距離很接近(<=5)
+        if (velocity.x != 0f && destination.x - bounds.left <= 5) {
+            // 暫停移動  token
+            changeVelocity(0f, 0f)
+        }else if (velocity.y != 0f && destination.y -bounds.top <= 5) {
+            changeVelocity(0f, 0f)
+        }
         bounds.left += velocity.x
         bounds.top += velocity.y
     }
@@ -51,6 +59,12 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
     fun changeVelocity(x: Float, y: Float) {
         velocity.x = x
         velocity.y = y
+    }
+
+    fun setDestination(x: Float, y: Float) {
+        destination.offset(x, y)
+//        destination.x += x
+//        destination.y += y
     }
 
     override fun tick() {
