@@ -20,7 +20,7 @@ import android.graphics.RectF
     7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
-class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Char) {
+class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Char): TickListener {
     companion object {
         var player = 0 // 0 代表玩家一號，1 代表玩家二號
     }
@@ -51,5 +51,9 @@ class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Ch
     fun changeVelocity(x: Float, y: Float) {
         velocity.x = x
         velocity.y = y
+    }
+
+    override fun tick() {
+        move()
     }
 }

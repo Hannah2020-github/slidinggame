@@ -10,7 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 
-class MyView(c: Context): View(c) {
+class MyView(c: Context): View(c), TickListener {
     private val p = Paint()
     private var sideMargin = 0f
     private var verticalMargin = 0f
@@ -21,19 +21,6 @@ class MyView(c: Context): View(c) {
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
     private lateinit var timer: Timer
-
-    inner class Timer(looper: Looper) : Handler(looper) {
-        init {
-            sendMessageDelayed(Message.obtain(), 0)
-        }
-        override fun handleMessage(msg: Message) {
-            for (token in tokens) {
-                token.move()
-            }
-            invalidate()
-            sendMessageDelayed(Message.obtain(), 10)
-        }
-    }
 
 
     override fun onDraw(canvas: Canvas) {
@@ -49,6 +36,7 @@ class MyView(c: Context): View(c) {
             h = height.toFloat()
             makeButtons()
             timer = Timer(Looper.getMainLooper())
+            timer.register(this)
         }
         // 繪製出所有的線段
         drawGrid(canvas)
@@ -70,16 +58,17 @@ class MyView(c: Context): View(c) {
                 if (btn.contains(event.x, event.y)) {
                     btnToching = true
                     btn.press()
+                    var token: Token
                     // 製作出新 token
                     if (btn.isColumnBtn()) {
-                        val token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
+                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
                         token.changeVelocity(1f, 0f)
-                        tokens.add(token)
                     }else {
-                        val token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
+                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
                         token.changeVelocity(0f, 1f)
-                        tokens.add(token)
                     }
+                    tokens.add(token)
+                    timer.register(token)
                     break
                 }
             }
@@ -118,5 +107,9 @@ class MyView(c: Context): View(c) {
         for(i in 0..5) {
             c.drawLine(sideMargin + i * gridLength, verticalMargin, sideMargin + i * gridLength, h - verticalMargin, p)
         }
+    }
+
+    override fun tick() {
+        invalidate()
     }
 }
