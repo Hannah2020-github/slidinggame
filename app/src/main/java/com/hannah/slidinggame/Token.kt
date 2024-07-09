@@ -20,14 +20,14 @@ import android.graphics.RectF
     7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
-class Token(res: Resources, size: Int, x: Float, y: Float, row: Char, cloumn: Char): TickListener {
+class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char): TickListener {
     companion object {
         var player = 0 // 0 代表玩家一號，1 代表玩家二號
     }
     private val bounds: RectF = RectF(x, y, x + size, y + size) // token 位置
     private var dog: Bitmap
     private val velocity = PointF(0f, 0f) // move token
-    private val destination = PointF(x, y) // 指定 token 移置特定位置
+    private val destination = PointF(x, y) // 指定 token 移至特定位置
 
     init {
         if (player % 2 == 0) {

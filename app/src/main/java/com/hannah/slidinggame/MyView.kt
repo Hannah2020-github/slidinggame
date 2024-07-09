@@ -58,19 +58,24 @@ class MyView(c: Context): View(c), TickListener {
                 if (btn.contains(event.x, event.y)) {
                     btnToching = true
                     btn.press()
-                    var token: Token
                     // 製作出新 token
-                    if (btn.isColumnBtn()) {
-                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), ('A'.code-1).toChar())
-                        token.changeVelocity(0f, 1f)
-                        token.setDestination(0f, gridLength)
+                    var token: Token = if (btn.isColumnBtn()) {
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(),  ('A'.code-1).toChar(), btn.getChar())
                     }else {
-                        token = Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), '0', btn.getChar())
-                        token.changeVelocity(1f, 0f)
-                        token.setDestination(gridLength, 0f)
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), '0')
                     }
                     tokens.add(token)
                     timer.register(token)
+
+                    // 移動此 token 與所有鄰居
+                    val neighbors : ArrayList<Token> = ArrayList()
+                    neighbors.add(token)
+                    if (btn.isColumnBtn()) {
+                        moveVerticalNeighbors(btn, neighbors)
+
+                    }else {
+                        moveHorizontalNeighbors(btn, neighbors)
+                    }
                     break
                 }
             }
@@ -110,6 +115,53 @@ class MyView(c: Context): View(c), TickListener {
             c.drawLine(sideMargin + i * gridLength, verticalMargin, sideMargin + i * gridLength, h - verticalMargin, p)
         }
     }
+
+    private fun moveVerticalNeighbors(btn: Btn, neighborList: ArrayList<Token>) {
+        // 直向button char: 1, 2, 3, 4 ,5
+        // 垂直移動 column (1, 2, 3, 4 ,5) 固定，row('A', 'B', 'C', 'D', 'E') 改變
+        val rowLetters = arrayOf('A', 'B', 'C', 'D', 'E')
+        for (i in rowLetters.indices) {
+            val dog: Token? = findDog(rowLetters[i], btn.getChar())
+            if (dog != null) {
+                neighborList.add(dog)
+            }else {
+                break
+            }
+        }
+        for (neighborToken in neighborList){
+            neighborToken.setDestination(0f, gridLength)
+            neighborToken.changeVelocity(0f, 5f)
+            neighborToken.row = (neighborToken.row + 1)
+        }
+    }
+    private fun moveHorizontalNeighbors(btn: Btn, neighborList: ArrayList<Token>) {
+        // 橫向button char: A, B, C, D ,E
+        // 水平移動 row('A', 'B', 'C', 'D', 'E') 固定， column (1, 2, 3, 4 ,5) 改變
+        val columnLetters = arrayOf('1', '2', '3', '4', '5')
+        for (i in columnLetters.indices) {
+            val dog: Token? = findDog(btn.getChar(), columnLetters[i])
+            if (dog != null) {
+                neighborList.add(dog)
+            }else {
+                break
+            }
+        }
+        for (neighborToken in neighborList){
+            neighborToken.setDestination(gridLength, 0f)
+            neighborToken.changeVelocity(5f, 0f)
+            neighborToken.column = (neighborToken.column + 1)
+        }
+    }
+
+    private fun findDog(row: Char, column: Char): Token? {
+        for (token in tokens) {
+            if (token.row == row && token.column == column) {
+                return token
+            }
+        }
+        return null
+    }
+
 
     override fun tick() {
         invalidate()
