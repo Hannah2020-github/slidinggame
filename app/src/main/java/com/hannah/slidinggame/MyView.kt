@@ -51,6 +51,13 @@ class MyView(c: Context): View(c), TickListener {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        // 如果 token 正在移動，則不新增任何 token
+        if (Token.isAnyTokenMoving()) {
+            for (btn in buttons) {
+                btn.unPress()
+            }
+            return true
+        }
         if (event.action == MotionEvent.ACTION_DOWN) {
             var btnToching = false
             // loop through button, check if a button is pressed
@@ -72,7 +79,6 @@ class MyView(c: Context): View(c), TickListener {
                     neighbors.add(token)
                     if (btn.isColumnBtn()) {
                         moveVerticalNeighbors(btn, neighbors)
-
                     }else {
                         moveHorizontalNeighbors(btn, neighbors)
                     }
