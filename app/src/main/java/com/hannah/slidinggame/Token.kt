@@ -32,6 +32,7 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
     private var dog: Bitmap
     private val velocity = PointF(0f, 0f) // move token
     private val destination = PointF(x, y) // 指定 token 移至特定位置
+    private var falling: Boolean = false
 
 
     init {
@@ -49,13 +50,29 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
         c.drawBitmap(dog, bounds.left, bounds.top, null)
     }
 
-    fun move() {
-        // token 橫向移動，且與格子的距離很接近(<=5)
-        if (velocity.x != 0f && destination.x - bounds.left <= 5) {
+    fun isVisible(h: Float): Boolean {
+        return bounds.top <= h
+    }
+    private fun move() {
+        if (falling) {
+            velocity.y *= 1.25f
+
+            // token 橫向移動，且與格子的距離很接近(<=5)
+        }else if (velocity.x != 0f && destination.x - bounds.left <= 5) {
             // 暫停移動  token
             changeVelocity(0f, 0f)
+            // 往下掉的 token
+            if (column > '5') {
+                changeVelocity(0f, 1f)
+                falling = true
+            }
         }else if (velocity.y != 0f && destination.y -bounds.top <= 5) {
             changeVelocity(0f, 0f)
+            // 往下掉的 token
+            if (row > 'E') {
+                changeVelocity(0f, 1f)
+                falling = true
+            }
         }
         bounds.left += velocity.x
         bounds.top += velocity.y

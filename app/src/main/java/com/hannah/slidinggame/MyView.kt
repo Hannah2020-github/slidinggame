@@ -40,10 +40,24 @@ class MyView(c: Context): View(c), TickListener {
         }
         // 繪製出所有的線段
         drawGrid(canvas)
+
         // 繪製出所有的按鈕
         for (button in buttons) {
             button.drawBtn(canvas)
         }
+
+        // 檢查有無掉出螢幕的 token
+        for (token in tokens) {
+            if (!token.isVisible(h)) {
+                // change velocity
+                token.changeVelocity(0f, 0f)
+                // timer unregister, tokens arraylist remove token
+                timer.unRegister(token)
+                tokens.remove(token)
+                break
+            }
+        }
+
         // 繪製出所有的 token
         for (token in tokens) {
             token.drawToken(canvas)
