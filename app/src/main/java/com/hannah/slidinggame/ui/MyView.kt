@@ -24,7 +24,11 @@ class MyView(c: Context): View(c), TickListener {
 
     init {
         val gb = GameBoard()
-        gb.submittMove('1')
+        gb.submittMove('3')
+        // BLANK, BLANK, X, BLANK, BLANK,
+        gb.submittMove('2')
+        gb.submittMove('4')
+        //  BLANK, O, X, X, BLANK
     }
 
 
