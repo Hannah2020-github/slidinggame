@@ -1,10 +1,11 @@
-package com.hannah.slidinggame
+package com.hannah.slidinggame.ui
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.RectF
+import com.hannah.slidinggame.R
 
 
 class Btn(res: Resources, label: Char, size: Int, x: Float, y: Float) {

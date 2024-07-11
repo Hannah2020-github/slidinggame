@@ -1,4 +1,4 @@
-package com.hannah.slidinggame
+package com.hannah.slidinggame.ui
 
 interface TickListener {
     fun tick()

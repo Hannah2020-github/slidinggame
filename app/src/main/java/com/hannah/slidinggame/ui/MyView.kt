@@ -1,14 +1,13 @@
-package com.hannah.slidinggame
+package com.hannah.slidinggame.ui
 
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import com.hannah.slidinggame.R
 
 class MyView(c: Context): View(c), TickListener {
     private val p = Paint()

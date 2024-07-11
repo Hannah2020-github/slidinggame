@@ -1,4 +1,4 @@
-package com.hannah.slidinggame
+package com.hannah.slidinggame.ui
 
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.PointF
 import android.graphics.RectF
+import com.hannah.slidinggame.R
 
 /*
     邏輯流程：
@@ -20,7 +21,8 @@ import android.graphics.RectF
     7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
-class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char): TickListener {
+class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char):
+    TickListener {
     companion object {
         var player = 0 // 0 代表玩家一號，1 代表玩家二號
         private var movers = 0 // 正在移動的 token 數量

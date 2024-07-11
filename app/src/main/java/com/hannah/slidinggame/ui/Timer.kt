@@ -1,4 +1,4 @@
-package com.hannah.slidinggame
+package com.hannah.slidinggame.ui
 
 import android.os.Handler
 import android.os.Looper
