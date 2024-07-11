@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import com.hannah.slidinggame.R
+import com.hannah.slidinggame.logic.GameBoard
 
 class MyView(c: Context): View(c), TickListener {
     private val p = Paint()
@@ -20,6 +21,11 @@ class MyView(c: Context): View(c), TickListener {
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
     private lateinit var timer: Timer
+
+    init {
+        val gb = GameBoard()
+        gb.submittMove('1')
+    }
 
 
     override fun onDraw(canvas: Canvas) {
