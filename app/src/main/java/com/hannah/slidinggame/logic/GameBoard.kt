@@ -16,14 +16,30 @@ class GameBoard {
 
     fun submittMove(move: Char) {
         if (move in '1'..'5') {
-//            val col = move.toInt() - 1 // toInt() 已被棄用
-            val col = move.toString().toInt() -1 // 對上 array index
+//            val column = move.toInt() - 1 // toInt() 已被棄用
+            val column = move.toString().toInt() -1 // 對上 array index
+            val neighbors = ArrayList<Player>()
+
             for (row in 0 until DIM) {
-                if (grid[row][col] == Player.BLANK) {
-                    grid[row][col] = currentPlayer
+                if (grid[row][column] != Player.BLANK) {
+                    neighbors.add(grid[row][column])
+                }else {
                     break
                 }
             }
+
+            // 推移表格上的 Player
+            for (index in neighbors.indices) {
+                if (index + 1 < DIM) {
+                    grid[index + 1 ][column] = neighbors[index]
+                }
+
+            }
+            grid[0][column] = currentPlayer
+
+//                if (grid[row][col] == Player.BLANK) {
+//                    grid[row][col] = currentPlayer
+//                    break
         }
 
         // Player X, O 輪替
@@ -32,11 +48,10 @@ class GameBoard {
         // print the current grid
         for (arr in grid) {
             for (element in arr) {
+
                 print("$element, ")
             }
         }
-
     }
-
 
 }
