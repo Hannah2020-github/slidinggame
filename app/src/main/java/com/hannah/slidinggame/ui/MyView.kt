@@ -26,12 +26,12 @@ class MyView(c: Context): View(c), TickListener {
         val gb = GameBoard()
         gb.submittMove('3')
         gb.submittMove('3')
-        gb.submittMove('3')
-        gb.submittMove('3')
-        gb.submittMove('4')
-        gb.submittMove('5')
+        gb.submittMove('A')
+        gb.submittMove('A')
+        gb.submittMove('B')
         gb.submittMove('1')
         gb.submittMove('1')
+        gb.submittMove('2')
 
     }
 
