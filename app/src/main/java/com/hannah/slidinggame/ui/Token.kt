@@ -65,14 +65,14 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
             changeVelocity(0f, 0f)
             // 往下掉的 token
             if (column > '5') {
-                changeVelocity(0f, 1f)
+                changeVelocity(0f, 5f)
                 falling = true
             }
         }else if (velocity.y != 0f && destination.y -bounds.top <= 5) {
             changeVelocity(0f, 0f)
             // 往下掉的 token
             if (row > 'E') {
-                changeVelocity(0f, 1f)
+                changeVelocity(0f, 5f)
                 falling = true
             }
         }

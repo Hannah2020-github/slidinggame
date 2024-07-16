@@ -9,12 +9,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.ui.graphics.Color
 import com.hannah.slidinggame.R
 import com.hannah.slidinggame.logic.GameBoard
 import com.hannah.slidinggame.logic.Player
 
 class MyView(c: Context): View(c), TickListener {
     private val p = Paint()
+    private val p2 = Paint()
     private var sideMargin = 0f
     private var verticalMargin = 0f
     private var gridLength = 0f
@@ -25,7 +27,13 @@ class MyView(c: Context): View(c), TickListener {
     private var tokens: ArrayList<Token> = ArrayList()
     private lateinit var timer: Timer
     private var engine = GameBoard()
+    private var player1WinCount = 0
+    private var player2WinCount = 0
 
+    init {
+        p2.textSize = 60f
+        p2.color = resources.getColor(R.color.black)
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -67,6 +75,10 @@ class MyView(c: Context): View(c), TickListener {
             token.drawToken(canvas)
         }
 
+        // 寫出勝利次數
+        canvas.drawText("棕狗勝利次數： ${player1WinCount}", 50f, 120f, p2)
+        canvas.drawText("黑白狗勝利次數： ${player2WinCount}", 50f, 200f, p2)
+
         // token 靜止時，判斷贏家
         if (!Token.isAnyTokenMoving()) {
             val winner = engine.checkWinners()
@@ -97,6 +109,11 @@ class MyView(c: Context): View(c), TickListener {
                 }
                 ab.create().show()
 
+                if (winner == Player.X) {
+                    player1WinCount++
+                }else if (winner == Player.O) {
+                    player2WinCount++
+                }
             }
         }
     }
