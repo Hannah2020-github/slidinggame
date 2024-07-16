@@ -24,15 +24,17 @@ class MyView(c: Context): View(c), TickListener {
 
     init {
         val gb = GameBoard()
-        gb.submittMove('3')
-        gb.submittMove('3')
-        gb.submittMove('A')
-        gb.submittMove('A')
-        gb.submittMove('B')
-        gb.submittMove('1')
         gb.submittMove('1')
         gb.submittMove('2')
-
+        gb.submittMove('1')
+        gb.submittMove('2')
+        gb.submittMove('1')
+        gb.submittMove('2')
+        gb.submittMove('1')
+        gb.submittMove('2')
+        gb.submittMove('1')
+        gb.submittMove('3')
+        println("=====> ${gb.checkWinners()}")
     }
 
 

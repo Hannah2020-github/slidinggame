@@ -1,5 +1,7 @@
 package com.hannah.slidinggame.logic
 
+import kotlin.random.Random
+
 class GameBoard {
     //Grid => 5 x 5 two dimensionat array
     // 5 row, 5 column
@@ -34,7 +36,6 @@ class GameBoard {
                 if (index + 1 < DIM) {
                     grid[index + 1 ][column] = neighbors[index]
                 }
-
             }
             grid[0][column] = currentPlayer
 
@@ -60,15 +61,95 @@ class GameBoard {
         currentPlayer = if (currentPlayer == Player.X) Player.O else Player.X
 
         // print the current grid
-        println("=====")
         for (arr in grid) {
+            println("")
             for (element in arr) {
-
                 print("$element, ")
             }
-            println("=====")
+            println("")
+        }
+        println("=====")
+
+    }
+    fun checkWinners(): Player {
+        val winners: ArrayList<Player> = ArrayList()
+        // check all rows
+        for (i in 0 until DIM) {
+            // 第一格不是空的，表示遊戲開始
+            if (grid[i][0] != Player.BLANK) {
+                val firstElement = grid[i][0]
+                var allTheSame = true // row 裡的每個值都一樣
+                for (j in 0 until DIM) {
+                    if (grid[i][j] != firstElement) {
+                        allTheSame = false
+                        break
+                    }
+                }
+                // 有相同的整條 row 是同樣標示，就不要再加到贏家(winners)裡
+                if (allTheSame && !winners.contains(firstElement)) {
+                    winners.add(firstElement)
+                }
+            }
+        }
+        if (winners.size == 1) {
+            return winners[0]
+        }else if (winners.size > 1) {
+            return Player.TIE // 平手的情況
         }
 
+        // check all columns
+        for (i in 0 until DIM) {
+            if (grid[0][i] != Player.BLANK) {
+                val firstElement = grid[0][i]
+                var allTheSame = true
+                for (j in 0 until DIM) {
+                    if (grid[j][i] != firstElement) {
+                        allTheSame = false
+                        break
+                    }
+                }
+                if (allTheSame && !winners.contains(firstElement)) {
+                    winners.add(firstElement)
+                }
+            }
+        }
+        if (winners.size == 1) {
+            return winners[0]
+        }else if (winners.size > 1) {
+            return Player.TIE
+        }
+
+        // check diagonals
+        if (grid[0][0] != Player.BLANK) {
+            val firstElement = grid[0][0]
+            var allTheSame = true
+            for (i in 0 until DIM) {
+                if (grid[i][i] != firstElement) {
+                    allTheSame = false
+                    break
+                }
+            }
+            if (allTheSame) {
+                return firstElement
+            }
+        }
+
+        if (grid[DIM-1][0] != Player.BLANK) {
+            val firstElement = grid[DIM-1][0]
+            var allTheSame = true
+            for (i in 0 until DIM) {
+                if (grid[DIM-1-i][i] != firstElement) {
+                    allTheSame = false
+                    break
+                }
+            }
+            if (allTheSame) {
+                return firstElement
+            }
+        }
+
+        return Player.BLANK
     }
 
 }
+
