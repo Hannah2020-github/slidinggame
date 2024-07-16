@@ -24,7 +24,7 @@ class MyView(c: Context): View(c), TickListener {
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
     private lateinit var timer: Timer
-    private val engine = GameBoard()
+    private var engine = GameBoard()
 
 
     override fun onDraw(canvas: Canvas) {
@@ -89,7 +89,9 @@ class MyView(c: Context): View(c), TickListener {
                     }
                 }
                 ab.setCancelable(false)
-                ab.setPositiveButton("好的") { _, _ -> }
+                ab.setPositiveButton("好的") { _, _ ->
+                    restartGame()
+                }
                 ab.setNeutralButton("不用了") {_, _, ->
                  (context as Activity).finish()
                 }
@@ -218,6 +220,16 @@ class MyView(c: Context): View(c), TickListener {
         return null
     }
 
+    private fun restartGame() {
+        Token.player = 0
+        timer.clearAll()
+        timer.unPause()
+        tokens.clear()
+        buttons.clear()
+        mathDone = false
+        engine = GameBoard()
+        invalidate()
+    }
 
     override fun tick() {
         invalidate()
