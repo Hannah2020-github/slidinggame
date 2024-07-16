@@ -1,5 +1,6 @@
 package com.hannah.slidinggame.ui
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -7,8 +8,10 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.hannah.slidinggame.R
 import com.hannah.slidinggame.logic.GameBoard
+import com.hannah.slidinggame.logic.Player
 
 class MyView(c: Context): View(c), TickListener {
     private val p = Paint()
@@ -21,21 +24,7 @@ class MyView(c: Context): View(c), TickListener {
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
     private lateinit var timer: Timer
-
-    init {
-        val gb = GameBoard()
-        gb.submittMove('1')
-        gb.submittMove('2')
-        gb.submittMove('1')
-        gb.submittMove('2')
-        gb.submittMove('1')
-        gb.submittMove('2')
-        gb.submittMove('1')
-        gb.submittMove('2')
-        gb.submittMove('1')
-        gb.submittMove('3')
-        println("=====> ${gb.checkWinners()}")
-    }
+    private val engine = GameBoard()
 
 
     override fun onDraw(canvas: Canvas) {
@@ -77,6 +66,37 @@ class MyView(c: Context): View(c), TickListener {
         for (token in tokens) {
             token.drawToken(canvas)
         }
+
+        // token 靜止時，判斷贏家
+        if (!Token.isAnyTokenMoving()) {
+            val winner = engine.checkWinners()
+            if (winner != Player.BLANK) {
+                // pause the timer
+                timer.pause()
+                // alert diolog
+                val ab = AlertDialog.Builder(context)
+                ab.setTitle("遊戲結束！")
+
+                when (winner) {
+                    Player.TIE -> {
+                        ab.setMessage("雙方平手")
+                    }
+                    Player.X -> {
+                        ab.setMessage("棕狗獲勝")
+                    }
+                    else -> {
+                        ab.setMessage("黑白狗獲勝")
+                    }
+                }
+                ab.setCancelable(false)
+                ab.setPositiveButton("好的") { _, _ -> }
+                ab.setNeutralButton("不用了") {_, _, ->
+                 (context as Activity).finish()
+                }
+                ab.create().show()
+
+            }
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -92,6 +112,7 @@ class MyView(c: Context): View(c), TickListener {
             // loop through button, check if a button is pressed
             for (btn in buttons) {
                 if (btn.contains(event.x, event.y)) {
+                    engine.submittMove(btn.getChar())
                     btnToching = true
                     btn.press()
                     // 製作出新 token
@@ -201,4 +222,5 @@ class MyView(c: Context): View(c), TickListener {
     override fun tick() {
         invalidate()
     }
+
 }

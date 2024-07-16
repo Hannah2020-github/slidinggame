@@ -6,12 +6,15 @@ import android.os.Message
 
 class Timer(looper: Looper) : Handler(looper) {
     private var listeners: ArrayList<TickListener> = ArrayList()
+    private var paused = false
 
     init {
         sendMessageDelayed(Message.obtain(), 0)
     }
     override fun handleMessage(msg: Message) {
-        notifyListener()
+        if (!paused) {
+            notifyListener()
+        }
         sendMessageDelayed(Message.obtain(), 10)
     }
 
@@ -28,5 +31,17 @@ class Timer(looper: Looper) : Handler(looper) {
         for (listener in listeners) {
             listener.tick()
         }
+    }
+
+    fun clearAll() {
+        listeners.clear()
+    }
+
+    fun pause() {
+        paused = true
+    }
+
+    fun unPause() {
+        paused = false
     }
 }
