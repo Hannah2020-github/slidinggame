@@ -17,8 +17,41 @@ class GameBoard {
     private var currentPlayer: Player = Player.X
 
     fun aiMove(): Int {
-        val randomIndex = Random.nextInt(0, 10)
-        return randomIndex
+        // check all rows
+        for (i in 0 until DIM) {
+            for (j in 0..2) {
+                var threeInARow = true
+                val firstElement = grid[i][j]
+                for (k in j..j + 2) {
+                    if (grid[i][k] != firstElement) {
+                        threeInARow = false
+                        break
+                    }
+                }
+                if (threeInARow && firstElement == Player.X) {
+                    return i + 5
+                }
+            }
+        }
+        // check all columns
+        for (i in 0 until DIM) {
+            for (j in 0..2) {
+                var threeInARow = true
+                val firstElement = grid[j][i]
+                for (k in j..j + 2) {
+                    if (grid[k][i] != firstElement) {
+                        threeInARow = false
+                        break
+                    }
+                }
+                if (threeInARow && firstElement == Player.X) {
+                    return i
+                }
+            }
+        }
+        // no three in a row
+        return Random.nextInt(0, 10)
+
     }
 
     fun submittMove(move: Char) {
