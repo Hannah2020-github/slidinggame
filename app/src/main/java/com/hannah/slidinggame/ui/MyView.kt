@@ -25,7 +25,7 @@ class MyView(c: Context): View(c), TickListener {
     private var h = 0f
     private var buttons: ArrayList<Btn> = ArrayList()
     private var tokens: ArrayList<Token> = ArrayList()
-    private lateinit var timer: Timer
+    private var timer: Timer = Timer(Looper.getMainLooper())
     private var engine = GameBoard()
     private var player1WinCount = 0
     private var player2WinCount = 0
@@ -47,7 +47,6 @@ class MyView(c: Context): View(c), TickListener {
             w = width.toFloat()
             h = height.toFloat()
             makeButtons()
-            timer = Timer(Looper.getMainLooper())
             timer.register(this)
         }
         // 繪製出所有的線段
@@ -250,6 +249,18 @@ class MyView(c: Context): View(c), TickListener {
 
     override fun tick() {
         invalidate()
+    }
+
+    fun gotBackground() {
+        timer.pause()
+    }
+
+    fun gotForeground() {
+        timer.unPause()
+    }
+
+    fun clearBeforeShunDown() {
+        Token.player = 0
     }
 
 }
