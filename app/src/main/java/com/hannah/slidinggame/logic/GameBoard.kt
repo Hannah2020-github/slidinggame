@@ -16,6 +16,11 @@ class GameBoard {
     private val DIM = 5
     private var currentPlayer: Player = Player.X
 
+    fun aiMove(): Int {
+        val randomIndex = Random.nextInt(0, 10)
+        return randomIndex
+    }
+
     fun submittMove(move: Char) {
         // 直向推移
         if (move in '1'..'5') {
