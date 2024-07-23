@@ -9,11 +9,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.ui.graphics.Color
 import com.hannah.slidinggame.R
 import com.hannah.slidinggame.logic.GameBoard
 import com.hannah.slidinggame.logic.GameMode
 import com.hannah.slidinggame.logic.Player
+import java.io.Serializable
 
 class MyView(c: Context): View(c), TickListener {
     private val p = Paint()
@@ -30,7 +30,7 @@ class MyView(c: Context): View(c), TickListener {
     private var engine = GameBoard()
     private var player1WinCount = 0
     private var player2WinCount = 0
-    private var mode: GameMode = GameMode.ONE_PLAYER
+    private lateinit var mode: Serializable
 
     init {
         p2.textSize = 60f
@@ -291,6 +291,10 @@ class MyView(c: Context): View(c), TickListener {
 
     fun clearBeforeShunDown() {
         Token.player = 0
+    }
+
+    fun setGameMode(m: Serializable) {
+        mode = m
     }
 
 }
