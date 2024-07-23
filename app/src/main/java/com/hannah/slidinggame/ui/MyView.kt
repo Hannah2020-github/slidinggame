@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import com.hannah.slidinggame.R
+import com.hannah.slidinggame.SettingsActivity
 import com.hannah.slidinggame.logic.GameBoard
 import com.hannah.slidinggame.logic.GameMode
 import com.hannah.slidinggame.logic.Player
@@ -290,12 +291,16 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
 
     fun gotBackground() {
         timer.pause()
-        soundtrack!!.pause()
+        if (soundtrack!!.isPlaying) {
+            soundtrack!!.pause()
+        }
     }
 
     fun gotForeground() {
         timer.unPause()
-        soundtrack!!.start()
+        if (SettingsActivity.isSoundOn(context)) {
+            soundtrack!!.start()
+        }
     }
 
     fun clearBeforeShunDown() {

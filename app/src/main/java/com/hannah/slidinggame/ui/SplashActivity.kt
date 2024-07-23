@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.AlertDialog
 import com.hannah.slidinggame.R
+import com.hannah.slidinggame.SettingsActivity
 import com.hannah.slidinggame.logic.GameMode
 
 class SplashActivity : AppCompatActivity() {
@@ -46,6 +47,10 @@ class SplashActivity : AppCompatActivity() {
             }
             ab.create().show()
 
+        }
+
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 }
