@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Sliding Game</string>
     <string name="btn_notification">Please hit one of the rund buttons</string>
+    <string name="one_player_game_description">One player game! Play with AI!</string>
+    <string name="two_player_game_description">Two player game! Play with your friend!</string>
+    <string name="queston_btn_description">About the game!!!</string>
+    <string name="setting_btn_description">Change the setting of the game</string>
+    <string name="about_game">About this game</string>
+    <string name="about_description">This is a game about gravity gobang. The rule is the same as Gobang, but we also have gravity feature!!!</string>
+    <string name="okay_btn">Understand.</string>
 </resources>
