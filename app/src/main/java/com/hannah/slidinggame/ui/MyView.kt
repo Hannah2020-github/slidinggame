@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
@@ -32,12 +33,15 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
     private var player1WinCount = 0
     private var player2WinCount = 0
     private lateinit var mode: Serializable
+    private var soundtrack: MediaPlayer? = null
 
     init {
         p2.textSize = 60f
         p2.color = resources.getColor(R.color.black)
         setImageResource(R.drawable.background)
         scaleType = ScaleType.FIT_XY
+        soundtrack = MediaPlayer.create(context, R.raw.example)
+        soundtrack!!.isLooping = true
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -286,14 +290,18 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
 
     fun gotBackground() {
         timer.pause()
+        soundtrack!!.pause()
     }
 
     fun gotForeground() {
         timer.unPause()
+        soundtrack!!.start()
     }
 
     fun clearBeforeShunDown() {
         Token.player = 0
+        soundtrack!!.release()
+        soundtrack = null
     }
 
     fun setGameMode(m: Serializable) {
