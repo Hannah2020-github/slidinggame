@@ -9,13 +9,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import com.hannah.slidinggame.R
 import com.hannah.slidinggame.logic.GameBoard
 import com.hannah.slidinggame.logic.GameMode
 import com.hannah.slidinggame.logic.Player
 import java.io.Serializable
 
-class MyView(c: Context): View(c), TickListener {
+class MyView(c: Context): AppCompatImageView(c), TickListener {
     private val p = Paint()
     private val p2 = Paint()
     private var sideMargin = 0f
@@ -35,6 +36,8 @@ class MyView(c: Context): View(c), TickListener {
     init {
         p2.textSize = 60f
         p2.color = resources.getColor(R.color.black)
+        setImageResource(R.drawable.background)
+        scaleType = ScaleType.FIT_XY
     }
 
     override fun onDraw(canvas: Canvas) {
