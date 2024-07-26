@@ -22,20 +22,14 @@ import com.hannah.slidinggame.logic.Player
     7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
-class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char, player: Player):
+class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char, player: Player, var myView: MyView):
     TickListener {
-    companion object {
-        private var movers = 0 // 正在移動的 token 數量
-        fun isAnyTokenMoving(): Boolean{
-            return movers > 0
-        }
-    }
+
     private val bounds: RectF = RectF(x, y, x + size, y + size) // token 位置
     private var dog: Bitmap
     private val velocity = PointF(0f, 0f) // move token
     private val destination = PointF(x, y) // 指定 token 移至特定位置
     private var falling: Boolean = false
-
 
     init {
         dog = if (player == Player.X) {
@@ -43,12 +37,14 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
         }else {
             Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.doggy4), size, size, true)
         }
+
 //        println("Token row = $row")
 //        println("Token cloumn = $cloumn")
     }
 
     fun drawToken(c: Canvas) {
         c.drawBitmap(dog, bounds.left, bounds.top, null)
+
     }
 
     fun isVisible(h: Float): Boolean {
@@ -62,16 +58,22 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
         }else if (velocity.x != 0f && destination.x - bounds.left <= 5) {
             // 暫停移動  token
             changeVelocity(0f, 0f)
+            myView.removeMoves()
+
             // 往下掉的 token
             if (column > '5') {
                 changeVelocity(0f, 5f)
+                myView.addMovers()
                 falling = true
             }
         }else if (velocity.y != 0f && destination.y -bounds.top <= 5) {
             changeVelocity(0f, 0f)
+            myView.removeMoves()
+
             // 往下掉的 token
             if (row > 'E') {
                 changeVelocity(0f, 5f)
+                myView.addMovers()
                 falling = true
             }
         }
@@ -80,11 +82,6 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
     }
 
     fun changeVelocity(x: Float, y: Float) {
-        if (x != 0f || y != 0f) {
-            movers++
-        }else {
-            movers--
-        }
         velocity.x = x
         velocity.y = y
     }

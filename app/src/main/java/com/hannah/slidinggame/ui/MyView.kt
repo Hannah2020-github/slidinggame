@@ -35,7 +35,8 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
     private var player2WinCount = 0
     private lateinit var mode: Serializable
     private var soundtrack: MediaPlayer? = null
-    private var player :Player = Player.X
+    private var player: Player = Player.X
+    private var movers = 0 // 正在移動的 token 數量
 
     init {
         p2.textSize = 60f
@@ -73,6 +74,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
             if (!token.isVisible(h)) {
                 // change velocity
                 token.changeVelocity(0f, 0f)
+                movers--
                 // timer unregister, tokens arraylist remove token
                 timer.unRegister(token)
                 tokens.remove(token)
@@ -90,7 +92,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
         canvas.drawText("${resources.getString(R.string.play_two_win_counts)} ${player2WinCount}", 50f, 200f, p2)
 
         // token 靜止時，判斷贏家
-        if (!Token.isAnyTokenMoving()) {
+        if (!isAnyTokenMoving()) {
             val winner = engine.checkWinners()
             if (winner != Player.BLANK) {
                 // pause the timer
@@ -136,9 +138,9 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
                 // 0, 1, 2, 3, 4, 橫向 buttons, '1', '2', '3', '4', '5'
                 // 5, 6, 7, 8, 9, 直向 buttons, 'A', 'B', 'C', 'D', 'E'
                 val token = if (choice < 5) {
-                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), ('A'.code - 1).toChar(), button.getChar(), Player.O)
+                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), ('A'.code - 1).toChar(), button.getChar(), Player.O, this)
                 }else {
-                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), button.getChar(), '0', Player.O)
+                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), button.getChar(), '0', Player.O, this)
                 }
 
                 changePlayer()
@@ -159,7 +161,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         // 如果 token 正在移動，則不新增任何 token
-        if (Token.isAnyTokenMoving()) {
+        if (isAnyTokenMoving()) {
             for (btn in buttons) {
                 btn.unPress()
             }
@@ -175,9 +177,9 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
                     btn.press()
                     // 製作出新 token
                     var token: Token = if (btn.isColumnBtn()) {
-                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(),  ('A'.code-1).toChar(), btn.getChar(), player)
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(),  ('A'.code-1).toChar(), btn.getChar(), player, this)
                     }else {
-                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), '0', player)
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), '0', player, this)
                     }
                     changePlayer()
                     tokens.add(token)
@@ -246,6 +248,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
         for (neighborToken in neighborList){
             neighborToken.setDestination(0f, gridLength)
             neighborToken.changeVelocity(0f, 5f)
+            movers++
             neighborToken.row = (neighborToken.row + 1)
         }
     }
@@ -264,6 +267,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
         for (neighborToken in neighborList){
             neighborToken.setDestination(gridLength, 0f)
             neighborToken.changeVelocity(5f, 0f)
+            movers++
             neighborToken.column = (neighborToken.column + 1)
         }
     }
@@ -315,8 +319,20 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
         mode = m
     }
 
+    fun addMovers() {
+        movers++
+    }
+
+    fun removeMoves() {
+        movers--
+    }
+
     fun changePlayer() {
         player = if (player == Player.X) Player.O else Player.X
+    }
+
+    fun isAnyTokenMoving(): Boolean{
+        return movers > 0
     }
 
 }
