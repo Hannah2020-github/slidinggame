@@ -11,6 +11,12 @@
     <string name="music_question">Want musics?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="play_one_win_counts">Brown dog player win counts:</string>
+    <string name="play_two_win_counts">Husky dog player win counts:</string>
+    <string name="gameOverTitle">Game Over!!!</string>
+    <string name="tie_game">TIE GAME!!!Wanna play again?</string>
+    <string name="player_one_wins">Brown dog player wins!</string>
+    <string name="player_two_wins">Husky dog player wins!</string>
 
 
     <!-- Settings Activity Title -->

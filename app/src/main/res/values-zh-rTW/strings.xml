@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">重力五子棋</string>
+    <string name="btn_notification">請按下圓形按鈕</string>
+    <string name="one_player_game_description">單人遊戲！與電腦AI對決!</string>
+    <string name="two_player_game_description">雙人遊戲!與朋友對戰</string>
+    <string name="queston_btn_description">關於遊戲</string>
+    <string name="setting_btn_description">改變遊戲設定</string>
+    <string name="about_game">關於遊戲</string>
+    <string name="about_description">這是個重力五子棋遊戲，規格與五子棋相同，但加入了重力元素!</string>
+    <string name="okay_btn">了解</string>
+    <string name="music_question">是否播放音樂</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="play_one_win_counts">棕色狗勝利次數:</string>
+    <string name="play_two_win_counts">黑白狗勝利次數:</string>
+    <string name="gameOverTitle">遊戲結束</string>
+    <string name="tie_game">雙方平手！要繼續玩下局嗎?</string>
+    <string name="player_one_wins">棕色狗玩家勝利!要繼續玩下局嗎?</string>
+    <string name="player_two_wins">黑白狗玩家勝利!要繼續玩下局嗎?</string>
+
+    <string name="title_activity_settings">設定</string>
+
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+</resources>

@@ -85,8 +85,8 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
         }
 
         // 寫出勝利次數
-        canvas.drawText("棕狗勝利次數： ${player1WinCount}", 50f, 120f, p2)
-        canvas.drawText("黑白狗勝利次數： ${player2WinCount}", 50f, 200f, p2)
+        canvas.drawText("${resources.getString(R.string.play_one_win_counts)} ${player1WinCount}", 50f, 120f, p2)
+        canvas.drawText("${resources.getString(R.string.play_two_win_counts)} ${player2WinCount}", 50f, 200f, p2)
 
         // token 靜止時，判斷贏家
         if (!Token.isAnyTokenMoving()) {
@@ -96,24 +96,24 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
                 timer.pause()
                 // alert diolog
                 val ab = AlertDialog.Builder(context)
-                ab.setTitle("遊戲結束！")
+                ab.setTitle(R.string.gameOverTitle)
 
                 when (winner) {
                     Player.TIE -> {
-                        ab.setMessage("雙方平手")
+                        ab.setMessage(R.string.tie_game)
                     }
                     Player.X -> {
-                        ab.setMessage("棕狗獲勝")
+                        ab.setMessage(R.string.player_one_wins)
                     }
                     else -> {
-                        ab.setMessage("黑白狗獲勝")
+                        ab.setMessage(R.string.player_two_wins)
                     }
                 }
                 ab.setCancelable(false)
-                ab.setPositiveButton("好的") { _, _ ->
+                ab.setPositiveButton(R.string.yes) { _, _ ->
                     restartGame()
                 }
-                ab.setNeutralButton("不用了") {_, _, ->
+                ab.setNeutralButton(R.string.no) {_, _, ->
                  (context as Activity).finish()
                 }
                 ab.create().show()
