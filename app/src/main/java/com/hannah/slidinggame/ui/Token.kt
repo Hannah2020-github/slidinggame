@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.PointF
 import android.graphics.RectF
 import com.hannah.slidinggame.R
+import com.hannah.slidinggame.logic.Player
 
 /*
     邏輯流程：
@@ -21,10 +22,9 @@ import com.hannah.slidinggame.R
     7. 移動 token(move)，token 順著 x 或 y 軸滑動，且在表格內
  */
 
-class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char):
+class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var column: Char, player: Player):
     TickListener {
     companion object {
-        var player = 0 // 0 代表玩家一號，1 代表玩家二號
         private var movers = 0 // 正在移動的 token 數量
         fun isAnyTokenMoving(): Boolean{
             return movers > 0
@@ -38,12 +38,11 @@ class Token(res: Resources, size: Int, x: Float, y: Float, var row: Char, var co
 
 
     init {
-        if (player % 2 == 0) {
-            dog = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.doggy3), size, size, true)
+        dog = if (player == Player.X) {
+            Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.doggy3), size, size, true)
         }else {
-            dog = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.doggy4), size, size, true)
+            Bitmap.createScaledBitmap(BitmapFactory.decodeResource(res, R.drawable.doggy4), size, size, true)
         }
-        player++ // 玩家輪替轉換
 //        println("Token row = $row")
 //        println("Token cloumn = $cloumn")
     }

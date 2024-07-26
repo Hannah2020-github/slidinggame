@@ -35,6 +35,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
     private var player2WinCount = 0
     private lateinit var mode: Serializable
     private var soundtrack: MediaPlayer? = null
+    private var player :Player = Player.X
 
     init {
         p2.textSize = 60f
@@ -127,7 +128,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
             }
             // AI 下棋的時間點，是在 token 靜止 及 game winner is blank 及 mode is one player 及 current player is AI
             // 讓 AI 後攻(Token.player % 2 != 0)
-            else if (mode == GameMode.ONE_PLAYER && Token.player % 2 != 0 ) {
+            else if (mode == GameMode.ONE_PLAYER && player == Player.O) {
                 val choice = engine.aiMove()
                 val button = buttons[choice]
                 engine.submittMove(button.getChar())
@@ -135,11 +136,12 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
                 // 0, 1, 2, 3, 4, 橫向 buttons, '1', '2', '3', '4', '5'
                 // 5, 6, 7, 8, 9, 直向 buttons, 'A', 'B', 'C', 'D', 'E'
                 val token = if (choice < 5) {
-                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), ('A'.code - 1).toChar(), button.getChar())
+                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), ('A'.code - 1).toChar(), button.getChar(), Player.O)
                 }else {
-                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), button.getChar(), '0')
+                    Token(resources, gridLength.toInt(), button.getX(), button.getY(), button.getChar(), '0', Player.O)
                 }
 
+                changePlayer()
                 tokens.add(token)
                 timer.register(token)
                 // 移動此 token 與所有鄰居
@@ -173,10 +175,11 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
                     btn.press()
                     // 製作出新 token
                     var token: Token = if (btn.isColumnBtn()) {
-                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(),  ('A'.code-1).toChar(), btn.getChar())
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(),  ('A'.code-1).toChar(), btn.getChar(), player)
                     }else {
-                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), '0')
+                        Token(resources, gridLength.toInt(), btn.getX(), btn.getY(), btn.getChar(), '0', player)
                     }
+                    changePlayer()
                     tokens.add(token)
                     timer.register(token)
 
@@ -275,7 +278,7 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
     }
 
     private fun restartGame() {
-        Token.player = 0
+        player = Player.X
         timer.clearAll()
         timer.unPause()
         tokens.clear()
@@ -304,13 +307,16 @@ class MyView(c: Context): AppCompatImageView(c), TickListener {
     }
 
     fun clearBeforeShunDown() {
-        Token.player = 0
         soundtrack!!.release()
         soundtrack = null
     }
 
     fun setGameMode(m: Serializable) {
         mode = m
+    }
+
+    fun changePlayer() {
+        player = if (player == Player.X) Player.O else Player.X
     }
 
 }
