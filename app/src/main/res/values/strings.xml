@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Sliding Game</string>
-    <string name="btn_notification">Please hit one of the rund buttons</string>
+    <string name="btn_notification">Please hit one of the round buttons</string>
     <string name="one_player_game_description">One player game! Play with AI!</string>
     <string name="two_player_game_description">Two player game! Play with your friend!</string>
     <string name="queston_btn_description">About the game!!!</string>
